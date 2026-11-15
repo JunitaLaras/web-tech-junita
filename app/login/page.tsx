@@ -1,16 +1,25 @@
+'use client'; // Penggunaan useActionState harus mencantumkan ini
+
 import { lusitana } from '@/app/ui/fonts';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
   AtSymbolIcon,
   KeyIcon,
-  //ExclamationCircleIcon,
+  ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from '@/app/ui/button';
 import Footer from '@/app/ui/footer';
+import { useActionState } from 'react';
+import { authenticate } from '@/app/lib/actions'; // autentikasi
 
 export default function Page() {
+  const [errorMessage, formAction, isPending] = useActionState(
+    authenticate,
+    undefined,
+  );
+
   return (
     <main className="flex min-h-screen flex-col justify-between bg-slate-50 p-4 sm:p-6 overflow-y-auto">
       {/* 1. HEADER / BANNER */}
@@ -33,7 +42,7 @@ export default function Page() {
 
       {/* 2. FORM LOGIN (DI TENGAH LAYAR) */}
       <div className="mx-auto my-6 md:my-10 w-full max-w-md rounded-3xl bg-white/80 backdrop-blur-2xl border border-white/60 shadow-2xl shadow-slate-200/60 p-6 sm:p-8 transition-all duration-300">
-        <form className="space-y-4">
+        <form action={formAction} className="space-y-4">
           <div className="flex-1 rounded-2xl bg-gray-50/80 px-6 pb-4 pt-8">
             <h1 className={`${lusitana.className} mb-4 text-2xl font-bold text-gray-900`}>
               Silakan Masuk dengan akun Anda.
@@ -79,11 +88,20 @@ export default function Page() {
                 </div>
               </div>
             </div>
-            <Button className="mt-6 w-full">
+            <Button className="mt-6 w-full" aria-disabled={isPending}>
               Masuk <ArrowRightIcon className="ml-auto h-5 w-5 text-white/90" />
             </Button>
-            <div className="flex h-8 items-end space-x-1">
-              {/* add form errors here */}
+            <div
+              className="flex h-8 items-end space-x-1"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              {errorMessage && (
+                <>
+                  <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
+                  <p className="text-sm text-red-500">{errorMessage}</p>
+                </>
+              )}
             </div>
           </div>
         </form>

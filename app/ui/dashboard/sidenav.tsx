@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import NavLinks from '@/app/ui/dashboard/nav-links';
 import { PowerIcon } from '@heroicons/react/24/outline';
+import { logout } from '@/app/lib/actions';
 
 export default function SideNav() {
   return (
@@ -35,8 +36,11 @@ export default function SideNav() {
             <p className="mt-0.5">NPM: 3420230028</p>
           </div>
         </div>
-        <form>
-          <button className="flex h-[48px] w-full grow items-center justify-center gap-2 rounded-2xl border border-slate-200/80 bg-white p-3 text-sm font-semibold text-slate-700 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-600 md:flex-none md:justify-start md:p-2 md:px-3">
+        <form action={logout}>
+          <button
+            type="submit"
+            className="flex h-[48px] w-full grow items-center justify-center gap-2 rounded-2xl border border-slate-200/80 bg-white p-3 text-sm font-semibold text-slate-700 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-600 md:flex-none md:justify-start md:p-2 md:px-3"
+          >
             <PowerIcon className="w-5" />
             <div className="hidden md:block">Sign Out</div>
           </button>
